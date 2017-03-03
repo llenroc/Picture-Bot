@@ -54,7 +54,46 @@ namespace PictureTwitterBot
 
 
             }
+            
+        //********************** TWEET BING PICTURE************************    
 
+ string path2 = @"C:\Users\ay-_-\Documents\Bing Picture";
+
+
+            var sorted2 = (from fn in Directory.GetFiles(path2)
+                           let m = Regex.Match(fn, @"(?<order>\d+)")
+                           where m.Success
+                           let n = int.Parse(m.Groups["order"].Value)
+                           orderby n
+                           select fn).ToList();
+
+
+
+            var photo2 = sorted2[0];
+            string myval2 = photo2.ToString();
+
+            string link = "https://www.bing.com/ " + DateTime.Now;
+
+
+            using (var stream2 = new FileStream(myval2, FileMode.Open))
+            {
+
+                var result = service.SendTweetWithMedia(new SendTweetWithMediaOptions
+                {
+                   Status=link,
+                    Images = new Dictionary<string, Stream> { { "image bot tweet", stream2 } }
+                });
+
+
+
+                if (File.Exists(myval2))
+                {
+                    File.Delete(myval2);
+                }
+
+
+
+            }
 
 
 
